@@ -1,9 +1,12 @@
+package com.company.option;
+
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.Arrays;
-import static com.company.Connect.openConnection;
+
+import static com.company.util.Connect.openConnection;
+import static com.company.util.PasswordUtilities.isPasswordCorrect;
 
 public class Login extends Option {
 	private static final String NAME = "Login";
@@ -11,26 +14,25 @@ public class Login extends Option {
 	private static final String QUERY = "SELECT name, password_hash, password_salt FROM Customer WHERE name=?;";
 
 	public Login() {
-		super(NAME, Arrays.asList(SUBOPTION_NAMES));
+		super(NAME, SUBOPTION_NAMES);
 	}
 
 	public ResultSet execute() throws SQLException {
 		String username = subOptionValues.get(SUBOPTION_NAMES[0]);
-		String pass = subOptionValues.get(SUBOPTION_NAMES[1]);
+		String password = subOptionValues.get(SUBOPTION_NAMES[1]);
 
 		try (Connection c = openConnection();
 				PreparedStatement stmt = c.prepareStatement(QUERY)) {
-			// look up username, hash, salt
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
 
-			// compare and return null if check fails
 			String hash = rs.getString("password_hash");
 			String salt = rs.getString("password_salt");
 
-			// TODO: use Ze's hash/salt checker - if no match, return null
+			if (!isPasswordCorrect(salt, hash, password)) {
+				return null;
+			}
 
-			// return username in resultset if check succeeds
 			return rs;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

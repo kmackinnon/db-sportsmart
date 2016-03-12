@@ -1,3 +1,6 @@
+package com.company.option;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -8,6 +11,10 @@ public abstract class Option {
 	protected String name;
 	protected List<String> subOptionNames;
 	protected Map<String, String> subOptionValues;
+
+	protected Option(String name, String[] subOptionNames) {
+		this(name, Arrays.asList(subOptionNames));
+	}
 
 	protected Option(String name, List<String> subOptionNames) {
 		this.name = name;
