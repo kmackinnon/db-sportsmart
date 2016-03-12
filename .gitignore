@@ -1,3 +1,9 @@
+# IntelliJ
 .idea/
 db-sportsmart.iml
 out/
+
+# Eclipse
+bin/
+.classpath
+.project
