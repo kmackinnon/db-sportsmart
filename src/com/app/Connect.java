@@ -1,4 +1,4 @@
-package app;
+package com.app;
 
 import java.sql.*;
 import java.sql.Connection;
