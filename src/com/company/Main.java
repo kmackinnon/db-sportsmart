@@ -12,7 +12,8 @@ import static com.company.util.Util.prettyPrintResults;
 
 public class Main {
     private static final Option[] OPTIONS = {
-        new Login()
+        new Login(),
+        new Search()
     };
 
     public static void main(String[] args) throws IOException {
@@ -66,7 +67,10 @@ public class Main {
         // Once all submenus have been entered, run execute, catching any runtime execution errors due to invalid input
         try {
             Option.Result result = option.execute();
-            System.out.println(result.message);
+
+            if (result.message != null) {
+                System.out.println(result.message);
+            }
 
             if (result.results != null) {
                 System.out.println();

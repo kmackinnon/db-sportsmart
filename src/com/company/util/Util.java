@@ -44,7 +44,12 @@ public class Util {
 
         for (List<String> row : results) {
             for (i = 0; i < nColumns; i++) {
-                int length = row.get(i).length();
+                int length;
+                if (row.get(i) == null) {
+                    length = 4; // will print "null"
+                } else {
+                    length = row.get(i).length();
+                }
 
                 if (maxWidths.size() == i) {
                     maxWidths.add(length);
