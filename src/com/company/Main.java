@@ -73,7 +73,7 @@ public class Main {
                 prettyPrintResults(result.results);
             }
         } catch (ExecutionException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

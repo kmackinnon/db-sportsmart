@@ -44,13 +44,10 @@ public class Login extends Option {
 				return result;
 			}
 
-			// Reset ResultSet cursor to first row
-			rs.beforeFirst();
 			result.message = String.format("Successfully logged in as \"%s\"", username);
 			result.results = Util.deepCopyResultSet(rs);
 			return result;
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
 			throw new ExecutionException("Unexpected error", e);
 		}
 	}
