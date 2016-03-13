@@ -34,5 +34,11 @@ public abstract class Option {
 		return this.subOptionNames;
 	}
 
-	public abstract ResultSet execute() throws SQLException;
+	public abstract Result execute() throws ExecutionException;
+
+	public static class Result {
+		public List<String> columnNames;
+		public List<List<String>> results;
+		public String message;
+	}
 }
