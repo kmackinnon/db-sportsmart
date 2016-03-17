@@ -8,16 +8,20 @@ import java.io.InputStreamReader;
 
 import com.company.option.*;
 
+import com.company.util.Context;
+
 import static com.company.util.Util.prettyPrintResults;
 
 public class Main {
-    private static final Option[] OPTIONS = {
-        new Login(),
-        new Search()
-    };
-
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        Context userContext = new Context();
+
+        Option[] OPTIONS = {
+            new Login(userContext),
+            new Search(),
+            new AddToCart(userContext)
+        };
 
         while (true) { // the loops goes on until the user chooses to quit
             System.out.format("%nPlease select an option:%n");

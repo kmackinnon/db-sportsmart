@@ -7,15 +7,21 @@ import java.sql.PreparedStatement;
 
 import static com.company.util.Connect.openConnection;
 import static com.company.util.PasswordUtilities.isPasswordCorrect;
+
 import com.company.util.Util;
+import com.company.util.Context;
 
 public class Login extends Option {
 	private static final String NAME = "Login";
 	private static final String[] SUBOPTION_NAMES = { "username", "password" };
-	private static final String QUERY = "SELECT customer_id, name, password_hash, password_salt FROM Customer WHERE name = ?;";
+	private static final String QUERY = "SELECT customer_id, name, cart_id, password_hash, password_salt FROM Customer WHERE name = ?;";
 
-	public Login() {
+	private Context context;
+
+	public Login(Context context) {
 		super(NAME, SUBOPTION_NAMES);
+
+		this.context = context;
 	}
 
 	public Result execute() throws ExecutionException {
@@ -38,6 +44,8 @@ public class Login extends Option {
 
 			String hash = rs.getString("password_hash");
 			String salt = rs.getString("password_salt");
+			this.context.customerId = rs.getInt("customer_id");
+			this.context.cartId = rs.getInt("cart_id");
 
 			if (!isPasswordCorrect(salt, hash, password)) {
 				result.message = "Incorrect password";
