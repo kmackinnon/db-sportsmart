@@ -45,7 +45,11 @@ public class Login extends Option {
 			String hash = rs.getString("password_hash");
 			String salt = rs.getString("password_salt");
 			this.context.customerId = rs.getInt("customer_id");
+
 			this.context.cartId = rs.getInt("cart_id");
+			if (rs.wasNull()) {
+				this.context.cartId = -1;
+			}
 
 			if (!isPasswordCorrect(salt, hash, password)) {
 				result.message = "Incorrect password";

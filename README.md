@@ -7,7 +7,7 @@ JDBC application - Database Systems at McGill
 - [x] query items on many fields
     + allowing range?, like?, etc
     + sort by "relevancy" score?
-- [ ] adding to shopping cart
+- [x] adding to shopping cart
 - [ ] convert shopping cart to purchase
 
 # Business Options™

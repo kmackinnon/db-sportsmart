@@ -18,7 +18,7 @@ public class AddToCart extends Option {
 
 	private static final String CREATE_CART_QUERY = "INSERT INTO Shopping_Cart DEFAULT VALUES RETURNING cart_id;";
 	private static final String TOUCH_CART_QUERY = "UPDATE Shopping_Cart SET last_changed = now() WHERE cart_id = ?;";
-	private static final String UPDATE_CUSTOMER_QUERY = "UPDATE Customer SET cart_id = ? WHERE user_id = ?;";
+	private static final String UPDATE_CUSTOMER_QUERY = "UPDATE Customer SET cart_id = ? WHERE customer_id = ?;";
 	private static final String AMOUNT_IN_STOCK = "SELECT amount_in_stock FROM Item WHERE item_id = ?;";
 	private static final String INSERT_CART_ITEM = "INSERT INTO Cart_to_Item (cart_id, item_id, quantity) VALUES (?, ?, ?);";
 	private static final String QUANTITY_IN_CART = "SELECT quantity FROM Cart_to_Item WHERE cart_id = ? AND item_id = ?;";
@@ -36,15 +36,19 @@ public class AddToCart extends Option {
 		int itemId;
 		int quantity;
 
+		Result result = new Result();
+
 		try {
 			itemId = Integer.parseInt(subOptionValues.get(SUBOPTION_NAMES[0]));
 			quantity = Integer.parseInt(subOptionValues.get(SUBOPTION_NAMES[1]));
 		} catch (NumberFormatException e) {
-			throw new ExecutionException("Invalid input - ids must be integers", e);
+			result.message = "Invalid input - ids must be integers";
+			return result;
 		}
 
 		if (context.customerId == -1) {
-			throw new ExecutionException("Customer not logged in!");
+			result.message = "Customer not logged in!";
+			return result;
 		}
 
 		List<List<String>> results;
@@ -57,7 +61,6 @@ public class AddToCart extends Option {
 			throw new ExecutionException("Couldn't open connection!", e);
 		}
 
-		Result result = new Result();
 		result.message = "Item successfully added to cart";
 		result.results = results;
 		return result;
@@ -156,8 +159,6 @@ public class AddToCart extends Option {
 			addToCart.setInt(3, quantity);
 
 			addToCart.execute();
-
-
 		} catch (SQLException e) {
 			throw new ExecutionException("Unexpected error while adding item to cart", e);
 		}

@@ -17,7 +17,7 @@ public class Main {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         Context userContext = new Context();
 
-        Option[] OPTIONS = {
+        Option[] options = {
             new Login(userContext),
             new Search(),
             new AddToCart(userContext)
@@ -27,26 +27,26 @@ public class Main {
             System.out.format("%nPlease select an option:%n");
 
             int i;
-            for (i = 0; i < OPTIONS.length; i++) {
-                System.out.format("%d) %s%n", i + 1, OPTIONS[i].getName());
+            for (i = 0; i < options.length; i++) {
+                System.out.format("%d) %s%n", i + 1, options[i].getName());
             }
 
             System.out.format("%d) Quit%n", i + 1);
 
             String input = bufferedReader.readLine();
 
-            int option = 0;
+            int selection = 0;
 
             try {
-                option = Integer.parseInt(input.trim());
+                selection = Integer.parseInt(input.trim());
 
-                if (option == OPTIONS.length + 1) {
+                if (selection == options.length + 1) {
                     System.out.println("Later skater");
                     return;
-                } else if (option < 1 || option > OPTIONS.length) {
-                    System.out.format("There is no option %d, please enter a valid option%n", option);
+                } else if (selection < 1 || selection > options.length) {
+                    System.out.format("There is no option %d, please enter a valid option%n", selection);
                 } else {
-                    launchSubMenu(OPTIONS[option - 1]);
+                    launchSubMenu(options[selection - 1]);
                 }
             } catch (NumberFormatException numberFormatException) {
                 System.out.println("Please enter a valid number, let's try again!");
