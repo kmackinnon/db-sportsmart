@@ -1,16 +1,18 @@
 package com.company;
 
-import java.util.Arrays;
-import java.util.Vector;
+import static com.company.util.Util.prettyPrintResults;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.company.option.*;
-
+import com.company.option.AddToCart;
+import com.company.option.Clearance;
+import com.company.option.ExecutionException;
+import com.company.option.Login;
+import com.company.option.Option;
+import com.company.option.Search;
 import com.company.util.Context;
-
-import static com.company.util.Util.prettyPrintResults;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -20,6 +22,7 @@ public class Main {
         Option[] options = {
             new Login(userContext),
             new Search(),
+            new Clearance(),
             new AddToCart(userContext)
         };
 
@@ -46,7 +49,7 @@ public class Main {
                 } else if (selection < 1 || selection > options.length) {
                     System.out.format("There is no option %d, please enter a valid option%n", selection);
                 } else {
-                    launchSubMenu(options[selection - 1]);
+                	launchSubMenu(options[selection - 1]);	
                 }
             } catch (NumberFormatException numberFormatException) {
                 System.out.println("Please enter a valid number, let's try again!");
@@ -57,15 +60,16 @@ public class Main {
     private static void launchSubMenu(Option option) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("To continue with your choice, provide data for the following fields");
-
-        // For each submenu option get string input and then sanitize and add to subOptionValues
-        for (String subOptionName : option.getSubOptionNames()) {
-            System.out.format("%s: ", subOptionName);
-            String input = in.readLine();
-            option.setSubOptionValue(subOptionName, input);
+        if (option.hasSubOptions()) {
+        	System.out.println("To continue with your choice, provide data for the following fields");
+        	// For each submenu option get string input and then sanitize and add to subOptionValues
+            for (String subOptionName : option.getSubOptionNames()) {
+                System.out.format("%s: ", subOptionName);
+                String input = in.readLine();
+                option.setSubOptionValue(subOptionName, input);
+            }
         }
-
+        
         System.out.println();
 
         // Once all submenus have been entered, run execute, catching any runtime execution errors due to invalid input

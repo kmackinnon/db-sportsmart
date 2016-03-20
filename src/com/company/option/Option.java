@@ -1,17 +1,20 @@
 package com.company.option;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public abstract class Option {
 	protected String name;
 	protected List<String> subOptionNames;
 	protected Map<String, String> subOptionValues;
 
+	protected Option(String name) {
+		this.name = name;
+		this.subOptionNames = null;
+	}
+	
 	protected Option(String name, String[] subOptionNames) {
 		this(name, Arrays.asList(subOptionNames));
 	}
@@ -33,6 +36,10 @@ public abstract class Option {
 	public List<String> getSubOptionNames() {
 		return this.subOptionNames;
 	}
+	
+	public boolean hasSubOptions() {
+		return this.subOptionNames != null && this.subOptionNames.size() > 0;
+	}
 
 	public abstract Result execute() throws ExecutionException;
 
@@ -41,4 +48,5 @@ public abstract class Option {
 		public List<List<String>> results;
 		public String message;
 	}
+	
 }
