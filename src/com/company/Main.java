@@ -23,7 +23,10 @@ public class Main {
             new Login(userContext),
             new Search(),
             new Clearance(),
-            new AddToCart(userContext)
+            new AddToCart(userContext),
+            new TopSellingItems(),
+            new AddToCart(userContext),
+            new ConvertToPurchase(userContext)
         };
 
         while (true) { // the loops goes on until the user chooses to quit
