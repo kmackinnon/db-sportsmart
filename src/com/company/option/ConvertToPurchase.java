@@ -18,6 +18,7 @@ public class ConvertToPurchase extends Option {
 
 	private static final String CREATE_PURCHASE = "INSERT INTO Purchase (customer_id) VALUES (?) RETURNING purchase_id;";
 	private static final String CREATE_ITEM_TO_PURCHASE = "INSERT INTO Item_to_Purchase (purchase_id, deal_id, item_id, quantity, purchase_price) SELECT ?, d.deal_id, i.item_id, quantity, coalesce(item_price * (1 - deal_percentage), item_price) FROM Cart_to_Item AS ci JOIN Item AS i ON (ci.item_id = i.item_id) LEFT OUTER JOIN Deal AS d ON (i.deal_id = d.deal_id) WHERE ci.cart_id = ?;";
+	private static final String DECREASE_STOCK_FOR_ALL_PURCHASED_ITEMS = "UPDATE Item AS i SET amount_in_stock = i.amount_in_stock - quantity FROM (SELECT item_id, quantity FROM Item_to_Purchase WHERE purchase_id = ?) AS ip WHERE ip.item_id = i.item_id;";
 	private static final String DISSOCIATE_CART_FROM_CUSTOMER = "UPDATE Customer SET cart_id = NULL WHERE customer_id = ?;";
 	private static final String DELETE_CART = "DELETE FROM Shopping_Cart WHERE cart_id = ?;";
 	private static final String FETCH_TOTAL_PURCHASE_COST = "SELECT sum(purchase_price * quantity) as total FROM Item_to_Purchase WHERE purchase_id = ?;";
@@ -56,6 +57,7 @@ public class ConvertToPurchase extends Option {
 
 			int purchaseId = createPurchase(c);
 			createItemToPurchase(c, purchaseId);
+			decreaseStockForAllPurchasedItems(c, purchaseId);
 			dissociateCartFromCustomer(c);
 			deleteCart(c);
 
@@ -97,6 +99,13 @@ public class ConvertToPurchase extends Option {
 			create.setInt(2, cartId);
 
 			create.execute();
+		}
+	}
+
+	private void decreaseStockForAllPurchasedItems(Connection c, int purchaseId) throws SQLException {
+		try (PreparedStatement update = prepareStatementFromConnection(c, DECREASE_STOCK_FOR_ALL_PURCHASED_ITEMS)) {
+			update.setInt(1, purchaseId);
+			update.execute();
 		}
 	}
 
