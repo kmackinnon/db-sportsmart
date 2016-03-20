@@ -10,5 +10,5 @@ JDBC application - Database Systems at McGill
 - [x] adding to shopping cart
 - [x] convert shopping cart to purchase
 - [ ] find top selling items
-- [ ] clearance items
+- [x] clearance items
     + items which are not going to be restocked but have remaining stock
