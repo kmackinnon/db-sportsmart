@@ -6,12 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.company.option.AddToCart;
-import com.company.option.Clearance;
-import com.company.option.ExecutionException;
-import com.company.option.Login;
-import com.company.option.Option;
-import com.company.option.Search;
+import com.company.option.*;
 import com.company.util.Context;
 
 public class Main {
