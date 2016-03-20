@@ -20,8 +20,9 @@ public class Main {
         Option[] options = {
             new Login(userContext),
             new Search(),
+            new TopSellingItems(),
             new AddToCart(userContext),
-            new TopSellingItems()
+            new ConvertToPurchase(userContext)
         };
 
         while (true) { // the loops goes on until the user chooses to quit

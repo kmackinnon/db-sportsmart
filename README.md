@@ -8,11 +8,7 @@ JDBC application - Database Systems at McGill
     + allowing range?, like?, etc
     + sort by "relevancy" score?
 - [x] adding to shopping cart
-- [ ] convert shopping cart to purchase
-
-# Business Options™
-- [ ] create deal and apply to items
-    + with flag for force update to break the "only if its a better deal condition"
+- [x] convert shopping cart to purchase
 - [ ] find top selling items
-    + with filters ie. top selling hats, top selling Flames merchandise, etc
-- [ ] generate list of items to be restocked
+- [ ] clearance items
+    + items which are not going to be restocked but have remaining stock
