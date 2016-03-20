@@ -57,7 +57,7 @@ public class Search extends Option {
 
         queryBuilder
             .append("LEFT OUTER JOIN (SELECT * FROM Deal WHERE CURRENT_DATE BETWEEN start_date AND end_date) AS d ON i.deal_id = d.deal_id ")
-            .append("WHERE (i.do_not_restock = TRUE AND i.amount_in_stock > 0) OR (i.do_not_restock = FALSE) ");
+            .append("WHERE ((i.do_not_restock = TRUE AND i.amount_in_stock > 0) OR (i.do_not_restock = FALSE)) ");
 
         String itemName = subOptionValues.get(SUBOPTION_NAMES[0]);
         if (itemName.length() > 0) {
@@ -82,7 +82,7 @@ public class Search extends Option {
         String minPrice = subOptionValues.get(SUBOPTION_NAMES[4]);
         if (minPrice.length() > 0) {
             queryBuilder
-                .append("AND i.item_price >= ")
+                .append("AND i.item_price::numeric >= ")
                 .append(minPrice)
                 .append(" ");
         }
@@ -90,7 +90,7 @@ public class Search extends Option {
         String maxPrice = subOptionValues.get(SUBOPTION_NAMES[5]);
         if (maxPrice.length() > 0) {
             queryBuilder
-                .append("AND i.item_price <= ")
+                .append("AND i.item_price::numeric <= ")
                 .append(maxPrice)
                 .append(" ");
         }
@@ -105,7 +105,6 @@ public class Search extends Option {
 
         try (Connection c = openConnection();
                 Statement stmt = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-            System.out.println(query);
             ResultSet rs = stmt.executeQuery(query);
             Result result = new Result();
 
