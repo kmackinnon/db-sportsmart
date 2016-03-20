@@ -16,7 +16,7 @@ import com.company.util.Util;
 public class Clearance extends Option {
 	
 	private static final String NAME = "Clearance";
-	private static final String QUERY = "SELECT item_name,item_price,amount_in_stock FROM item WHERE do_not_restock = true ORDER BY amount_in_stock ASC";
+	private static final String QUERY = "SELECT item_name,item_price,amount_in_stock FROM item WHERE (do_not_restock = true AND amount_in_stock > 0) ORDER BY amount_in_stock ASC";
 	
 	public Clearance() {
 		super(NAME);
